@@ -1,0 +1,61 @@
+from typing import List, Dict
+
+from module_definition.parameter import Parameter
+from module_definition.parameter_documentation import ParameterDocumentation
+from module_definition.type import Type
+from util import TemplateFormatter, read_lines
+
+
+class Method:
+    def __init__(self, identifier: str, return_type: Type,
+                 parameters: List[Parameter]) -> None:
+        self.identifier = identifier
+        self.return_type = return_type
+        self.parameters = parameters
+
+    @property
+    def return_struct_type(self):
+        return str(self.return_type.decrease_pointer_count())
+
+    @property
+    def has_input_parameters(self):
+        return [x for x in self.parameters if x.is_input]
+
+    @property
+    def has_no_input_parameters(self):
+        return not self.has_input_parameters
+
+    @property
+    def has_parameters(self):
+        return self.parameters
+
+    @property
+    def has_no_parameters(self):
+        return not self.has_parameters
+
+    def enrich_with_documentation(
+            self, parameter_documentation: Dict[str, ParameterDocumentation]) \
+            -> None:
+        for parameter in self.parameters:
+            if parameter.identifier in parameter_documentation:
+                parameter.enrich_with_documentation(
+                    parameter_documentation[parameter.identifier])
+
+    def __str__(self) -> str:
+        return '{} {}({})'.format(self.return_type, self.identifier,
+                                  ', '.join([str(x) for x in self.parameters]))
+
+    @classmethod
+    def from_method_definition(cls, method_definition: str):
+        parts = method_definition.split('(')
+        ret_id_part = parts[0]
+        return_type = ret_id_part[:ret_id_part.rindex(' ')].strip()
+        identifier = ret_id_part[ret_id_part.rindex(' ') + 1:].strip()
+
+        return Method(identifier, Type.from_type_string(return_type),
+                      Parameter.from_parameter_list(parts[1][:-2], identifier))
+
+    def generate_header_content(self) -> str:
+        return '\n'.join(
+            TemplateFormatter(read_lines(
+                'resource/header_template.h')).format(self))
