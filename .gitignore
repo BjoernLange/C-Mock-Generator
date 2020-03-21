@@ -1,3 +1,7 @@
+### Custom ignores
+.idea/
+
+
 ### Python ignores
 
 # Byte-compiled / optimized / DLL files
