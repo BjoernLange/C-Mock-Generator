@@ -11,7 +11,7 @@ typedef struct <<<identifier>>>_mocked_call <<<identifier>>>_mocked_call_t;
 struct <<<identifier>>>_mocked_call {
     <<<FORALL parameters>>>
     <<<IF is_output>>>
-    bool has_<<<identifier>>>
+    bool has_<<<identifier>>>;
     <<<ENDIF>>>
     <<<struct_type>>> <<<identifier>>>;
     <<<ENDFORALL>>>
@@ -24,13 +24,17 @@ struct <<<identifier>>>_mocked_call {
 <<<identifier>>>_mocked_call_t * <<<identifier>>>_ongoing_mocking;
 
 <<<FORALL parameters>>>
+<<<IF is_output>>>
 static <<<method_identifier>>>_thens_t * <<<method_identifier>>>_then_provide_<<<identifier>>>(<<<type>>>);
+<<<ENDIF>>>
 <<<ENDFORALL>>>
 static void <<<identifier>>>_then_return(<<<return_type>>>);
 
 <<<identifier>>>_thens_t <<<identifier>>>_thens = {
     <<<FORALL parameters>>>
+    <<<IF is_output>>>
     .then_provide_<<<identifier>>> = &<<<method_identifier>>>_then_provide_<<<identifier>>>,
+    <<<ENDIF>>>
     <<<ENDFORALL>>>
     .then_return = &<<<identifier>>>_then_return,
 };

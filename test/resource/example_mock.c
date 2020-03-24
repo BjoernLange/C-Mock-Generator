@@ -101,7 +101,7 @@ ex_err_t ex_init(
 typedef struct ex_do_something_mocked_call ex_do_something_mocked_call_t;
 struct ex_do_something_mocked_call {
     int i;
-    bool has_j
+    bool has_j;
     int j;
     bool has_return_value;
     ex_err_t return_value;
@@ -111,12 +111,10 @@ struct ex_do_something_mocked_call {
 ex_do_something_mocked_call_t * ex_do_something_mocked_calls;
 ex_do_something_mocked_call_t * ex_do_something_ongoing_mocking;
 
-static ex_do_something_thens_t * ex_do_something_then_provide_i(int);
 static ex_do_something_thens_t * ex_do_something_then_provide_j(int *);
 static void ex_do_something_then_return(ex_err_t);
 
 ex_do_something_thens_t ex_do_something_thens = {
-    .then_provide_i = &ex_do_something_then_provide_i,
     .then_provide_j = &ex_do_something_then_provide_j,
     .then_return = &ex_do_something_then_return,
 };
