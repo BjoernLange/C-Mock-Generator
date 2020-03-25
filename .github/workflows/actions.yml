@@ -32,7 +32,7 @@ jobs:
       run: |
         pip install pylint
         # Ignore missing documentation
-        pylint **/*.py --disable=C0114 --disable=C0115 --disable=C0116
+        pylint **/*.py --disable=C0114 --disable=C0115 --disable=C0116 --exit-zero
     - name: Test
       run: |
         pip install pytest
