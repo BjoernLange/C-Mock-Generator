@@ -37,7 +37,7 @@ jobs:
       run: |
         pip install pytest
         pip install pytest-cov
-        pytest --cov=
+        export PYTHONPATH=.:$PYTHONPATH && pytest --cov=
     - name: System Test
       run: |
         cd system_test/complex && make clean && make
