@@ -1,5 +1,8 @@
 # A Mockito style mock generator for C
 
+
+[![Actions Status](https://github.com/BjoernLange/C-Mock-Generator/workflows/CI/badge.svg)](https://github.com/BjoernLange/C-Mock-Generator/actions)
+
 This is a code generator for simple C mocks that can be dropped into a C project without the need for any dependencies. The written test code uses a style similar to that of [Mockito](https://site.mockito.org/).
 
 ## Requirements
