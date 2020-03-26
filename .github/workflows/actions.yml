@@ -40,4 +40,5 @@ jobs:
         export PYTHONPATH=.:$PYTHONPATH && pytest --cov=
     - name: System Test
       run: |
+        sudo apt-get install libgtest-dev
         cd system_test/complex && make clean && make
