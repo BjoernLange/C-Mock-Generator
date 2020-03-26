@@ -20,25 +20,10 @@ jobs:
     - name: Upgrade pip
       run: |
         python -m pip install --upgrade pip
-    - name: Lint (flake8)
+    - name: Install Python linter and test dependencies
       run: |
-        pip install flake8
-        flake8 --count --show-source --statistics
-    - name: Lint (mypy)
-      run: |
-        pip install mypy
-        mypy .
-    - name: Lint (pylint)
-      run: |
-        pip install pylint
-        # Ignore missing documentation
-        pylint **/*.py --disable=C0114 --disable=C0115 --disable=C0116 --exit-zero
-    - name: Test
-      run: |
-        pip install pytest
-        pip install pytest-cov
-        export PYTHONPATH=.:$PYTHONPATH && pytest --cov=
-    - name: System Test
+        pip install flake8 mypy pylint pytest pytest-cov
+    - name: Install gtest
       run: |
         sudo apt-get install libgtest-dev cmake
         cd /usr/src/gtest
@@ -53,4 +38,20 @@ jobs:
         sudo ln -s /usr/lib/libgtest.a /usr/local/lib/googletest/libgtest.a
         sudo ln -s /usr/lib/libgtest_main.a /usr/local/lib/googletest/libgtest_main.a
         cd /home/runner/work/C-Mock-Generator/C-Mock-Generator
+    - name: Lint (flake8)
+      run: |
+        flake8 --count --show-source --statistics
+    - name: Lint (mypy)
+      run: |
+        mypy .
+    - name: Lint (pylint)
+      run: |
+        # Ignore missing documentation
+        pylint **/*.py --disable=C0114 --disable=C0115 --disable=C0116 --exit-zero
+    - name: Test
+      run: |
+        export PYTHONPATH=.:$PYTHONPATH
+        pytest --cov=
+    - name: System Test
+      run: |
         cd system_test/complex && make clean && make
