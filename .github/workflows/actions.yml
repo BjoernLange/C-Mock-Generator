@@ -40,7 +40,6 @@ jobs:
         export PYTHONPATH=.:$PYTHONPATH && pytest --cov=
     - name: System Test
       run: |
-        pwd
         sudo apt-get install libgtest-dev cmake
         cd /usr/src/gtest
         sudo mkdir build
@@ -53,4 +52,5 @@ jobs:
         sudo mkdir /usr/local/lib/googletest
         sudo ln -s /usr/lib/libgtest.a /usr/local/lib/googletest/libgtest.a
         sudo ln -s /usr/lib/libgtest_main.a /usr/local/lib/googletest/libgtest_main.a
+        cd /home/runner/work/C-Mock-Generator/C-Mock-Generator
         cd system_test/complex && make clean && make
