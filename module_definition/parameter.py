@@ -1,5 +1,3 @@
-from typing import Union
-
 from module_definition.parameter_documentation import ParameterDocumentation
 from module_definition.parameter_kind import ParameterKind
 from module_definition.type import Type
@@ -11,7 +9,8 @@ class Parameter:
         self.identifier = identifier
         self.method_identifier = method_identifier
         self.type = param_type
-        self.kind: Union[ParameterKind, None] = None
+        self.kind = ParameterKind.from_in_out(
+            True, param_type.can_be_output_parameter_type())
 
     @property
     def is_input(self):
@@ -39,9 +38,8 @@ class Parameter:
                 True, self.type.can_be_output_parameter_type())
         elif documentation.kind.is_out() \
                 and not self.type.can_be_output_parameter_type():
-            print('[ERROR] Parameter {} is declared as output but type cannot '
-                  'be used as output'.format(self))
-            self.kind = ParameterKind.kind_in()
+            raise ValueError('Parameter {} is declared as output but type '
+                             'cannot be used as output'.format(self))
         else:
             self.kind = documentation.kind
 

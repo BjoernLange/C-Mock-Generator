@@ -9,12 +9,6 @@ class ParameterKind:
     def is_out(self) -> bool:
         return self.p_out
 
-    def __str__(self) -> str:
-        result = 'in' if self.p_in else ''
-        if self.p_out:
-            result = result + 'out'
-        return result
-
     @classmethod
     def from_string(cls, identifier: str):
         if identifier == 'in':
