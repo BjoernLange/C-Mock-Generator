@@ -14,6 +14,18 @@ class Type(ABC):
     def strip_const(self):
         raise NotImplementedError()
 
+    @abstractmethod
+    def is_pointer(self) -> bool:
+        raise NotImplementedError()
+
+    @abstractmethod
+    def is_c_string(self) -> bool:
+        raise NotImplementedError()
+
+    @abstractmethod
+    def is_utf8_string(self) -> bool:
+        raise NotImplementedError()
+
     @classmethod
     def from_type_string(cls, type_string: str):
         if '*' in type_string:
@@ -33,6 +45,15 @@ class SimpleType(Type):
 
     def strip_const(self):
         return self
+
+    def is_pointer(self) -> bool:
+        return False
+
+    def is_c_string(self) -> bool:
+        return False
+
+    def is_utf8_string(self) -> bool:
+        return False
 
     def __str__(self) -> str:
         return self.type
@@ -62,6 +83,15 @@ class PointerType(Type):
 
     def strip_const(self):
         return PointerType(self.type, False, self.pointer_count, False)
+
+    def is_pointer(self) -> bool:
+        return True
+
+    def is_c_string(self) -> bool:
+        return self.type == 'char' and self.pointer_count == 1
+
+    def is_utf8_string(self) -> bool:
+        return self.type == 'wchar_t' and self.pointer_count == 1
 
     def __str__(self) -> str:
         v_const = ' const' if self.value_const else ''

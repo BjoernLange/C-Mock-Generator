@@ -102,7 +102,7 @@ typedef struct ex_do_something_mocked_call ex_do_something_mocked_call_t;
 struct ex_do_something_mocked_call {
     int i;
     bool has_j;
-    int j;
+    int * j;
     bool has_return_value;
     ex_err_t return_value;
     ex_do_something_mocked_call_t * next;
@@ -191,9 +191,11 @@ static bool ex_do_something_mocked_call_matches_input(
         ex_do_something_mocked_call_t * mocked_call,
         int i
         ) {
-    return
-        mocked_call->i == i
-        ;
+    if (mocked_call->i != i) {
+        return false;
+    }
+
+    return true;
 }
 
 static ex_do_something_mocked_call_t * ex_do_something_mocked_calls_find_matching(

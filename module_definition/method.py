@@ -36,10 +36,30 @@ class Method:
     def enrich_with_documentation(
             self, parameter_documentation: Dict[str, ParameterDocumentation]) \
             -> None:
+        self.enrich_parameters_with_documentation(parameter_documentation)
+        self.mark_length_descriptors_as_ignored()
+
+    def enrich_parameters_with_documentation(
+            self, parameter_documentation: Dict[str, ParameterDocumentation]):
         for parameter in self.parameters:
             if parameter.identifier in parameter_documentation:
                 parameter.enrich_with_documentation(
                     parameter_documentation[parameter.identifier])
+
+    def mark_length_descriptors_as_ignored(self):
+        for parameter in self.parameters:
+            if parameter.has_length_descriptor:
+                try:
+                    length_descriptor = next(
+                        (x for x in self.parameters
+                         if x.identifier == parameter.length_descriptor))
+                except StopIteration:
+                    raise ValueError(
+                        'Cannot use {} as length descriptor for {} because it '
+                        'does not exist'.format(
+                            parameter.length_descriptor, parameter.identifier))
+
+                length_descriptor.is_ignored = True
 
     def __str__(self) -> str:
         return '{} {}({})'.format(self.return_type, self.identifier,

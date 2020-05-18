@@ -138,13 +138,66 @@ static bool <<<identifier>>>_mocked_call_matches_input(
         <<<ENDIF>>>
         <<<ENDFORALL>>>
         ) {
-    return
-        <<<FORALL parameters JOINING  && >>>
-        <<<IF is_input>>>
-        mocked_call-><<<identifier>>> == <<<identifier>>>
-        <<<ENDIF>>>
-        <<<ENDFORALL>>>
-        ;
+    <<<FORALL parameters>>>
+    <<<IF is_input>>>
+    <<<IF is_included>>>
+    <<<IF has_simple_type>>>
+    if (mocked_call-><<<identifier>>> != <<<identifier>>>) {
+        return false;
+    }
+    <<<ENDIF>>>
+    <<<IF has_pointer_type>>>
+    <<<IF is_single_element>>>
+    if (*(mocked_call-><<<identifier>>>) != *(<<<identifier>>>)) {
+        return false;
+    }
+    <<<ENDIF>>>
+    <<<IF has_fixed_length>>>
+    if (memcmp(mocked_call-><<<identifier>>>, <<<identifier>>>, <<<fixed_length>>>)) {
+        return false;
+    }
+    <<<ENDIF>>>
+    <<<IF is_null_terminated>>>
+    <<<IF has_c_string_type>>>
+    if (strcmp(mocked_call-><<<identifier>>>, <<<identifier>>>)) {
+        return false;
+    }
+    <<<ENDIF>>>
+    <<<IF has_utf8_string_type>>>
+    if (wcscmp(mocked_call-><<<identifier>>>, <<<identifier>>>)) {
+        return false;
+    }
+    <<<ENDIF>>>
+    <<<IF has_no_string_type>>>
+    {
+        uint mocked_length = 0;
+        for (; mocked_call-><<<identifier>>>[mocked_length] != '\0'; mocked_length++);
+        uint param_length = 0;
+        for (; <<<identifier>>>[param_length] != '\0'; param_length++);
+        if (mocked_length != param_length) {
+            return false;
+        }
+
+        if (memcmp(mocked_call-><<<identifier>>>, <<<identifier>>>, mocked_length)) {
+            return false;
+        }
+    }
+    <<<ENDIF>>>
+    <<<ENDIF>>>
+    <<<IF has_length_descriptor>>>
+    if (mocked_call-><<<length_descriptor>>> != <<<length_descriptor>>>) {
+        return false;
+    }
+    if (memcmp(mocked_call-><<<identifier>>>, <<<identifier>>>, <<<length_descriptor>>>)) {
+        return false;
+    }
+    <<<ENDIF>>>
+    <<<ENDIF>>>
+    <<<ENDIF>>>
+    <<<ENDIF>>>
+    <<<ENDFORALL>>>
+
+    return true;
 }
 <<<ENDIF>>>
 <<<IF has_no_input_parameters>>>

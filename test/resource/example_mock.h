@@ -27,7 +27,7 @@ ex_err_t ex_init(void);
 
 typedef struct mock_ex_do_something_call {
     int expected_i;
-    int provided_j;
+    int * provided_j;
     ex_err_t provided_return_value;
 } mock_ex_do_something_call_t;
 

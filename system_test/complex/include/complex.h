@@ -11,7 +11,7 @@ typedef enum {
 /**
  * Performs a complex computation.
  * @param[in] input The input value.
- * @param[out] output count outputs.
+ * @param[out] output The output.
  * @return An error code.
  */
 complex_err_t complex_computation(int input, int * output);

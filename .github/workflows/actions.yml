@@ -51,7 +51,7 @@ jobs:
     - name: Test
       run: |
         export PYTHONPATH=.:$PYTHONPATH
-        pytest --cov=
+        ./test.sh
     - name: System Test
       run: |
-        cd system_test/complex && make clean && make
+        ./run_system_tests.sh

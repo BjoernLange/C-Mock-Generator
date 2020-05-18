@@ -1,6 +1,7 @@
 ### Custom ignores
 .idea/
 **/mock/**
+application_test
 
 ### C ignores
 # Prerequisites
