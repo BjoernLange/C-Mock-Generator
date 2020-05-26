@@ -3,7 +3,7 @@
 
 typedef struct ex_init_mocked_call ex_init_mocked_call_t;
 struct ex_init_mocked_call {
-    bool has_return_value;
+    bool is_mock_complete;
     ex_err_t return_value;
     ex_init_mocked_call_t * next;
 };
@@ -19,7 +19,7 @@ ex_init_thens_t ex_init_thens = {
 
 static void ex_init_verify_last_mock_completed(void) {
     if (ex_init_ongoing_mocking != NULL) {
-        EXPECT_EQ(true, ex_init_ongoing_mocking->has_return_value);
+        EXPECT_EQ(true, ex_init_ongoing_mocking->is_mock_complete);
     }
 }
 
@@ -28,7 +28,7 @@ static ex_init_mocked_call_t * ex_init_mocked_call_create(
     ex_init_mocked_call_t * mocked_call = (ex_init_mocked_call_t *) malloc(sizeof(ex_init_mocked_call_t));
     EXPECT_TRUE(mocked_call != NULL);
 
-    mocked_call->has_return_value = false;
+    mocked_call->is_mock_complete = false;
     mocked_call->next = NULL;
 
     return mocked_call;
@@ -61,7 +61,7 @@ ex_init_thens_t * when_ex_init(
 
 static void ex_init_then_return(ex_err_t return_value) {
     ex_init_ongoing_mocking->return_value = return_value;
-    ex_init_ongoing_mocking->has_return_value = true;
+    ex_init_ongoing_mocking->is_mock_complete = true;
 }
 
 static void ex_init_mocked_calls_free(void) {
@@ -104,7 +104,7 @@ struct ex_do_something_mocked_call {
     bool has_j;
     size_t j_length;
     int * j;
-    bool has_return_value;
+    bool is_mock_complete;
     ex_err_t return_value;
     ex_do_something_mocked_call_t * next;
 };
@@ -122,7 +122,7 @@ ex_do_something_thens_t ex_do_something_thens = {
 
 static void ex_do_something_verify_last_mock_completed(void) {
     if (ex_do_something_ongoing_mocking != NULL) {
-        EXPECT_EQ(true, ex_do_something_ongoing_mocking->has_return_value);
+        EXPECT_EQ(true, ex_do_something_ongoing_mocking->is_mock_complete);
     }
 }
 
@@ -136,7 +136,7 @@ static ex_do_something_mocked_call_t * ex_do_something_mocked_call_create(
     mocked_call->j = NULL;
     mocked_call->has_j = false;
     mocked_call->j_length = 0;
-    mocked_call->has_return_value = false;
+    mocked_call->is_mock_complete = false;
     mocked_call->next = NULL;
 
     return mocked_call;
@@ -179,7 +179,7 @@ static ex_do_something_thens_t * ex_do_something_then_provide_j(int * j, size_t 
 
 static void ex_do_something_then_return(ex_err_t return_value) {
     ex_do_something_ongoing_mocking->return_value = return_value;
-    ex_do_something_ongoing_mocking->has_return_value = true;
+    ex_do_something_ongoing_mocking->is_mock_complete = true;
 }
 
 static void ex_do_something_mocked_calls_free(void) {

@@ -1,3 +1,5 @@
+import pytest
+
 from module_definition import Method
 from module_definition.parameter import Parameter
 from module_definition.parameter_documentation import ParameterDocumentation, \
@@ -55,3 +57,37 @@ def test_value_error_is_raised_when_length_descriptors_does_not_exist():
     except ValueError:
         return
     assert False
+
+
+@pytest.mark.parametrize('return_type,is_not_void', [
+    (SimpleType('void'), False),
+    (SimpleType('int'), True),
+    (PointerType('void', False, 1, False), True),
+])
+def test_has_not_void_return_type_returns_true_when_return_type_is_not_void(
+        return_type, is_not_void):
+    # given:
+    method = Method('abc', return_type, [])
+
+    # when:
+    result = method.has_not_void_return_type
+
+    # then:
+    assert result == is_not_void
+
+
+@pytest.mark.parametrize('return_type,is_void', [
+    (SimpleType('void'), True),
+    (SimpleType('int'), False),
+    (PointerType('void', False, 1, False), False),
+])
+def test_has_void_return_type_returns_true_when_the_return_type_is_void(
+        return_type, is_void):
+    # given:
+    method = Method('abc', return_type, [])
+
+    # when:
+    result = method.has_void_return_type
+
+    # then:
+    assert result == is_void

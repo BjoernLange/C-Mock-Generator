@@ -16,8 +16,10 @@ struct <<<identifier>>>_mocked_call {
     <<<ENDIF>>>
     <<<type>>> <<<identifier>>>;
     <<<ENDFORALL>>>
-    bool has_return_value;
+    bool is_mock_complete;
+    <<<IF has_not_void_return_type>>>
     <<<return_struct_type>>> return_value;
+    <<<ENDIF>>>
     <<<identifier>>>_mocked_call_t * next;
 };
 
@@ -29,7 +31,12 @@ struct <<<identifier>>>_mocked_call {
 static <<<method_identifier>>>_thens_t * <<<method_identifier>>>_then_provide_<<<identifier>>>(<<<type>>>, size_t);
 <<<ENDIF>>>
 <<<ENDFORALL>>>
+<<<IF has_void_return_type>>>
+static void <<<identifier>>>_then_return(void);
+<<<ENDIF>>>
+<<<IF has_not_void_return_type>>>
 static void <<<identifier>>>_then_return(<<<return_type>>>);
+<<<ENDIF>>>
 
 <<<identifier>>>_thens_t <<<identifier>>>_thens = {
     <<<FORALL parameters>>>
@@ -42,7 +49,7 @@ static void <<<identifier>>>_then_return(<<<return_type>>>);
 
 static void <<<identifier>>>_verify_last_mock_completed(void) {
     if (<<<identifier>>>_ongoing_mocking != NULL) {
-        EXPECT_EQ(true, <<<identifier>>>_ongoing_mocking->has_return_value);
+        EXPECT_EQ(true, <<<identifier>>>_ongoing_mocking->is_mock_complete);
     }
 }
 
@@ -66,7 +73,7 @@ static <<<identifier>>>_mocked_call_t * <<<identifier>>>_mocked_call_create(
     mocked_call-><<<identifier>>>_length = 0;
     <<<ENDIF>>>
     <<<ENDFORALL>>>
-    mocked_call->has_return_value = false;
+    mocked_call->is_mock_complete = false;
     mocked_call->next = NULL;
 
     return mocked_call;
@@ -119,9 +126,14 @@ static <<<method_identifier>>>_thens_t * <<<method_identifier>>>_then_provide_<<
 
 <<<ENDIF>>>
 <<<ENDFORALL>>>
+<<<IF has_void_return_type>>>
+static void <<<identifier>>>_then_return(void) {
+<<<ENDIF>>>
+<<<IF has_not_void_return_type>>>
 static void <<<identifier>>>_then_return(<<<return_type>>> return_value) {
     <<<identifier>>>_ongoing_mocking->return_value = return_value;
-    <<<identifier>>>_ongoing_mocking->has_return_value = true;
+<<<ENDIF>>>
+    <<<identifier>>>_ongoing_mocking->is_mock_complete = true;
 }
 
 static void <<<identifier>>>_mocked_calls_free(void) {
@@ -261,7 +273,9 @@ static <<<identifier>>>_mocked_call_t * <<<identifier>>>_mocked_calls_find_match
     }
     <<<ENDIF>>>
     <<<ENDFORALL>>>
+    <<<IF has_not_void_return_type>>>
     return matching_call->return_value;
+    <<<ENDIF>>>
 }
 
 <<<ENDFORALL>>>

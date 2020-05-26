@@ -26,6 +26,10 @@ class Type(ABC):
     def is_utf8_string(self) -> bool:
         raise NotImplementedError()
 
+    @abstractmethod
+    def is_void(self) -> bool:
+        raise NotImplementedError()
+
     @classmethod
     def from_type_string(cls, type_string: str):
         if '*' in type_string:
@@ -54,6 +58,9 @@ class SimpleType(Type):
 
     def is_utf8_string(self) -> bool:
         return False
+
+    def is_void(self) -> bool:
+        return self.type == 'void'
 
     def __str__(self) -> str:
         return self.type
@@ -92,6 +99,9 @@ class PointerType(Type):
 
     def is_utf8_string(self) -> bool:
         return self.type == 'wchar_t' and self.pointer_count == 1
+
+    def is_void(self) -> bool:
+        return False
 
     def __str__(self) -> str:
         v_const = ' const' if self.value_const else ''

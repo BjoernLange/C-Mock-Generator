@@ -18,6 +18,14 @@ class Method:
         return str(self.return_type.decrease_pointer_count())
 
     @property
+    def has_void_return_type(self):
+        return self.return_type.is_void()
+
+    @property
+    def has_not_void_return_type(self):
+        return not self.has_void_return_type
+
+    @property
     def has_input_parameters(self):
         return [x for x in self.parameters if x.is_input]
 
