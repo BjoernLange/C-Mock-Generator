@@ -12,8 +12,9 @@ struct <<<identifier>>>_mocked_call {
     <<<FORALL parameters>>>
     <<<IF is_output>>>
     bool has_<<<identifier>>>;
+    size_t <<<identifier>>>_length;
     <<<ENDIF>>>
-    <<<struct_type>>> <<<identifier>>>;
+    <<<type>>> <<<identifier>>>;
     <<<ENDFORALL>>>
     bool has_return_value;
     <<<return_struct_type>>> return_value;
@@ -25,7 +26,7 @@ struct <<<identifier>>>_mocked_call {
 
 <<<FORALL parameters>>>
 <<<IF is_output>>>
-static <<<method_identifier>>>_thens_t * <<<method_identifier>>>_then_provide_<<<identifier>>>(<<<type>>>);
+static <<<method_identifier>>>_thens_t * <<<method_identifier>>>_then_provide_<<<identifier>>>(<<<type>>>, size_t);
 <<<ENDIF>>>
 <<<ENDFORALL>>>
 static void <<<identifier>>>_then_return(<<<return_type>>>);
@@ -60,7 +61,9 @@ static <<<identifier>>>_mocked_call_t * <<<identifier>>>_mocked_call_create(
     mocked_call-><<<identifier>>> = <<<identifier>>>;
     <<<ENDIF>>>
     <<<IF is_output>>>
+    mocked_call-><<<identifier>>> = NULL;
     mocked_call->has_<<<identifier>>> = false;
+    mocked_call-><<<identifier>>>_length = 0;
     <<<ENDIF>>>
     <<<ENDFORALL>>>
     mocked_call->has_return_value = false;
@@ -106,9 +109,10 @@ static void <<<identifier>>>_mocked_calls_append(<<<identifier>>>_mocked_call_t 
 
 <<<FORALL parameters>>>
 <<<IF is_output>>>
-static <<<method_identifier>>>_thens_t * <<<method_identifier>>>_then_provide_<<<identifier>>>(<<<type>>> <<<identifier>>>) {
-    memcpy(&<<<method_identifier>>>_ongoing_mocking-><<<identifier>>>, <<<identifier>>>, sizeof(<<<size_type>>>));
+static <<<method_identifier>>>_thens_t * <<<method_identifier>>>_then_provide_<<<identifier>>>(<<<type>>> <<<identifier>>>, size_t <<<identifier>>>_length) {
+    <<<method_identifier>>>_ongoing_mocking-><<<identifier>>> = <<<identifier>>>;
     <<<method_identifier>>>_ongoing_mocking->has_<<<identifier>>> = true;
+    <<<method_identifier>>>_ongoing_mocking-><<<identifier>>>_length = <<<identifier>>>_length;
 
     return &<<<method_identifier>>>_thens;
 }
@@ -253,7 +257,7 @@ static <<<identifier>>>_mocked_call_t * <<<identifier>>>_mocked_calls_find_match
     <<<FORALL parameters>>>
     <<<IF is_output>>>
     if (matching_call->has_<<<identifier>>>) {
-        memcpy(<<<identifier>>>, &matching_call-><<<identifier>>>, sizeof(<<<size_type>>>));
+        memcpy(<<<identifier>>>, matching_call-><<<identifier>>>, sizeof(<<<size_type>>>) * matching_call-><<<identifier>>>_length);
     }
     <<<ENDIF>>>
     <<<ENDFORALL>>>

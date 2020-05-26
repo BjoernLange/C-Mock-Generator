@@ -15,7 +15,7 @@ TEST(UNDER_TEST_TEST_SUITE_NAME, ArrayInputFixedSizeTest) {
     when_to_mock_compute_fixed_size( // expected input parameters
         input // input
     )
-    ->then_provide_output(&output)  // provided output parameter
+    ->then_provide_output(&output, 1)  // provided output parameter
     ->then_return(TO_MOCK_ERR_OK); // return value
 
     // when:
@@ -37,7 +37,7 @@ TEST(UNDER_TEST_TEST_SUITE_NAME, ArrayInputNullTerminatedTest) {
     when_to_mock_compute_null_terminated( // expected input parameters
         input_to_ignore // input
     )
-    ->then_provide_output(&output_to_ignore)  // provided output parameter
+    ->then_provide_output(&output_to_ignore, 1)  // provided output parameter
     ->then_return(TO_MOCK_ERR_OK); // return value
 
     char input_to_ignore2[2] = {'a', '\0'};
@@ -45,7 +45,7 @@ TEST(UNDER_TEST_TEST_SUITE_NAME, ArrayInputNullTerminatedTest) {
     when_to_mock_compute_null_terminated( // expected input parameters
         input_to_ignore2 // input
     )
-    ->then_provide_output(&output_to_ignore2)  // provided output parameter
+    ->then_provide_output(&output_to_ignore2, 1)  // provided output parameter
     ->then_return(TO_MOCK_ERR_OK); // return value
 
     char input[3] = {'a', 'b', '\0'};
@@ -53,7 +53,7 @@ TEST(UNDER_TEST_TEST_SUITE_NAME, ArrayInputNullTerminatedTest) {
     when_to_mock_compute_null_terminated( // expected input parameters
         input // input
     )
-    ->then_provide_output(&output)  // provided output parameter
+    ->then_provide_output(&output, 1)  // provided output parameter
     ->then_return(TO_MOCK_ERR_OK); // return value
 
     // when:
@@ -77,7 +77,7 @@ TEST(UNDER_TEST_TEST_SUITE_NAME, ArrayInputNullTerminatedTwiceTest) {
         input1,
         input2
     )
-    ->then_provide_output(&output)
+    ->then_provide_output(&output, 1)
     ->then_return(TO_MOCK_ERR_OK);
 
     // when:
@@ -100,7 +100,7 @@ TEST(UNDER_TEST_TEST_SUITE_NAME, ArrayInputLengthDescribedTest) {
         input,
         3
     )
-    ->then_provide_output(&output)
+    ->then_provide_output(&output, 1)
     ->then_return(TO_MOCK_ERR_OK);
 
     // when:
@@ -123,7 +123,7 @@ TEST(UNDER_TEST_TEST_SUITE_NAME, ArrayInputLengthDescribedMatchCorrectByContentT
         alt_input,
         3
     )
-    ->then_provide_output(&alt_output)
+    ->then_provide_output(&alt_output, 1)
     ->then_return(TO_MOCK_ERR_OK);
 
     int input[3] = {5, 6, 0};
@@ -132,7 +132,7 @@ TEST(UNDER_TEST_TEST_SUITE_NAME, ArrayInputLengthDescribedMatchCorrectByContentT
         input,
         3
     )
-    ->then_provide_output(&output)
+    ->then_provide_output(&output, 1)
     ->then_return(TO_MOCK_ERR_OK);
 
     // when:
@@ -155,7 +155,7 @@ TEST(UNDER_TEST_TEST_SUITE_NAME, ArrayInputLengthDescribedMatchCorrectByLengthTe
         input_to_ignore,
         2
     )
-    ->then_provide_output(&output_to_ignore)
+    ->then_provide_output(&output_to_ignore, 1)
     ->then_return(TO_MOCK_ERR_OK);
 
     int input[3] = {5, 6, 0};
@@ -164,7 +164,7 @@ TEST(UNDER_TEST_TEST_SUITE_NAME, ArrayInputLengthDescribedMatchCorrectByLengthTe
         input,
         3
     )
-    ->then_provide_output(&output)
+    ->then_provide_output(&output, 1)
     ->then_return(TO_MOCK_ERR_OK);
 
     // when:
@@ -186,7 +186,7 @@ TEST(UNDER_TEST_TEST_SUITE_NAME, ArrayInputUtf8StringComparisonTest) {
     when_to_mock_compute_utf8(
         input
     )
-    ->then_provide_output(&output)
+    ->then_provide_output(&output, 1)
     ->then_return(TO_MOCK_ERR_OK);
 
     // when:

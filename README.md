@@ -71,7 +71,7 @@ TEST(MY_TEST_SUITE_NAME, MyTestName) {
     when_complex_computation( // expected input parameters
         0 // input
     )
-    ->then_provide_output(&output)  // provided output parameter
+    ->then_provide_output(&output, 1)  // provided output parameter
     ->then_return(COMPLEX_ERR_OK); // return value
 
     // when:

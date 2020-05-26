@@ -102,6 +102,7 @@ typedef struct ex_do_something_mocked_call ex_do_something_mocked_call_t;
 struct ex_do_something_mocked_call {
     int i;
     bool has_j;
+    size_t j_length;
     int * j;
     bool has_return_value;
     ex_err_t return_value;
@@ -111,7 +112,7 @@ struct ex_do_something_mocked_call {
 ex_do_something_mocked_call_t * ex_do_something_mocked_calls;
 ex_do_something_mocked_call_t * ex_do_something_ongoing_mocking;
 
-static ex_do_something_thens_t * ex_do_something_then_provide_j(int *);
+static ex_do_something_thens_t * ex_do_something_then_provide_j(int *, size_t);
 static void ex_do_something_then_return(ex_err_t);
 
 ex_do_something_thens_t ex_do_something_thens = {
@@ -132,7 +133,9 @@ static ex_do_something_mocked_call_t * ex_do_something_mocked_call_create(
     EXPECT_TRUE(mocked_call != NULL);
 
     mocked_call->i = i;
+    mocked_call->j = NULL;
     mocked_call->has_j = false;
+    mocked_call->j_length = 0;
     mocked_call->has_return_value = false;
     mocked_call->next = NULL;
 
@@ -166,9 +169,10 @@ ex_do_something_thens_t * when_ex_do_something(
     return &ex_do_something_thens;
 }
 
-static ex_do_something_thens_t * ex_do_something_then_provide_j(int * j) {
-    memcpy(&ex_do_something_ongoing_mocking->j, j, sizeof(int));
+static ex_do_something_thens_t * ex_do_something_then_provide_j(int * j, size_t j_length) {
+    ex_do_something_ongoing_mocking->j = j;
     ex_do_something_ongoing_mocking->has_j = true;
+    ex_do_something_ongoing_mocking->j_length = j_length;
 
     return &ex_do_something_thens;
 }
@@ -222,7 +226,7 @@ ex_err_t ex_do_something(
         );
     EXPECT_TRUE(matching_call != NULL);
     if (matching_call->has_j) {
-        memcpy(j, &matching_call->j, sizeof(int));
+        memcpy(j, matching_call->j, sizeof(int) * matching_call->j_length);
     }
     return matching_call->return_value;
 }

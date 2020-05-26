@@ -1,20 +1,8 @@
-typedef struct mock_<<<identifier>>>_call {
-    <<<FORALL parameters>>>
-    <<<IF is_input>>>
-    <<<struct_type>>> expected_<<<identifier>>>;
-    <<<ENDIF>>>
-    <<<IF is_output>>>
-    <<<struct_type>>> provided_<<<identifier>>>;
-    <<<ENDIF>>>
-    <<<ENDFORALL>>>
-    <<<return_struct_type>>> provided_return_value;
-} mock_<<<identifier>>>_call_t;
-
 typedef struct <<<identifier>>>_thens <<<identifier>>>_thens_t;
 
 <<<FORALL parameters>>>
 <<<IF is_output>>>
-typedef <<<method_identifier>>>_thens_t * (*<<<method_identifier>>>_then_provide_<<<identifier>>>_func)(<<<type>>>);
+typedef <<<method_identifier>>>_thens_t * (*<<<method_identifier>>>_then_provide_<<<identifier>>>_func)(<<<type>>>, size_t);
 typedef <<<method_identifier>>>_then_provide_<<<identifier>>>_func <<<method_identifier>>>_then_provide_<<<identifier>>>_func_t;
 <<<ENDIF>>>
 <<<ENDFORALL>>>
