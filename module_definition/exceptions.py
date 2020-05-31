@@ -1,0 +1,2 @@
+class MockGeneratorError(Exception):
+    pass

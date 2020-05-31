@@ -1,6 +1,7 @@
 from abc import ABC
 from typing import Dict, Set, List, Tuple, Optional, cast
 
+from module_definition.exceptions import MockGeneratorError
 from module_definition.parameter_kind import ParameterKind
 
 
@@ -35,7 +36,7 @@ ATTRIBUTION_FACTORIES = {
 
 def create_attribution(identifier: str, value: Optional[str]):
     if identifier not in ATTRIBUTION_FACTORIES:
-        raise ValueError('Unknown attribution: {}'.format(identifier))
+        raise MockGeneratorError('Unknown attribution: {}'.format(identifier))
 
     return ATTRIBUTION_FACTORIES[identifier](value)
 
@@ -63,7 +64,7 @@ def parse_param_annotation(param_annotation: str) -> \
         identifier = param_annotation
 
     if identifier.strip() == '':
-        raise ValueError('Missing parameter identifier')
+        raise MockGeneratorError('Missing parameter identifier')
 
     return is_valid_annotation, attribution_values, identifier
 
@@ -77,8 +78,8 @@ class ActiveAttributions:
             ActiveAttributions.__parse_identifier_and_value(attribution_value)
 
         if identifier in self.active:
-            raise ValueError('Duplicate {} attribution'
-                             .format(identifier))
+            raise MockGeneratorError('Duplicate {} attribution'
+                                     .format(identifier))
 
         attribution = create_attribution(identifier, value)
         self.check_for_conflicts(attribution)
@@ -87,10 +88,9 @@ class ActiveAttributions:
     def check_for_conflicts(self, attribution):
         for active in self.active.values():
             if active.conflicts_with(attribution.identifier):
-                raise ValueError('{} and {} attributions cannot be '
-                                 'used simultaneously'
-                                 .format(active.identifier,
-                                         attribution.identifier))
+                raise MockGeneratorError(
+                    '{} and {} attributions cannot be used simultaneously'
+                    .format(active.identifier, attribution.identifier))
 
     @classmethod
     def __parse_identifier_and_value(cls, attribution_value: str) -> \
@@ -197,8 +197,9 @@ class PositiveIntAttribution(Attribution):
                  conflicting_identifiers: Optional[Set[str]] = None):
         super().__init__(identifier, conflicting_identifiers)
         if value is None:
-            raise ValueError('{} attribution requires a value (pass with =x)'
-                             .format(self.identifier))
+            raise MockGeneratorError(
+                '{} attribution requires a value (pass with =x)'
+                .format(self.identifier))
         try:
             self.value = int(value)
         except ValueError:
@@ -208,8 +209,9 @@ class PositiveIntAttribution(Attribution):
             self.raise_illegal_value()
 
     def raise_illegal_value(self) -> None:
-        raise ValueError('The value of the {} attribution needs to be a '
-                         'positive integer (>0)'.format(self.identifier))
+        raise MockGeneratorError(
+            'The value of the {} attribution needs to be a positive integer '
+            '(>0)'.format(self.identifier))
 
 
 class StringAttribution(Attribution):
@@ -217,6 +219,7 @@ class StringAttribution(Attribution):
                  conflicting_identifiers: Optional[Set[str]] = None):
         super().__init__(identifier, conflicting_identifiers)
         if value is None:
-            raise ValueError('{} attribution requires a value (pass with =x)'
-                             .format(self.identifier))
+            raise MockGeneratorError(
+                '{} attribution requires a value (pass with =x)'
+                .format(self.identifier))
         self.value = value

@@ -1,5 +1,6 @@
 from typing import List, Dict
 
+from module_definition.exceptions import MockGeneratorError
 from module_definition.parameter import Parameter
 from module_definition.parameter_documentation import ParameterDocumentation
 from module_definition.type import Type
@@ -62,7 +63,7 @@ class Method:
                         (x for x in self.parameters
                          if x.identifier == parameter.length_descriptor))
                 except StopIteration:
-                    raise ValueError(
+                    raise MockGeneratorError(
                         'Cannot use {} as length descriptor for {} because it '
                         'does not exist'.format(
                             parameter.length_descriptor, parameter.identifier))

@@ -1,3 +1,4 @@
+from module_definition.exceptions import MockGeneratorError
 from module_definition.parameter_kind import ParameterKind
 
 import pytest
@@ -44,11 +45,11 @@ def test_kind_out():
     assert kind.is_out()
 
 
-def test_create_invalid_kind():
+def test_creation_of_invalid_kind_throws_mock_generator_error():
     # when:
     try:
         ParameterKind.from_in_out(False, False)
-    except ValueError:
+    except MockGeneratorError:
         return
     assert False
 
@@ -71,6 +72,6 @@ def test_from_string_for_illegal_value():
     # when:
     try:
         ParameterKind.from_string('abc')
-    except ValueError:
+    except MockGeneratorError:
         return
     assert False

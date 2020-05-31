@@ -1,8 +1,9 @@
 import argparse
 import os
-from typing import Iterable, Tuple, Union, List
+from typing import Iterable, Tuple, List, Optional
 
 from module_definition import Module, Method, ParameterDocumentation
+from module_definition.exceptions import MockGeneratorError
 from util import CodeBuilder, TemplateFormatter, read_lines
 
 
@@ -39,7 +40,7 @@ class LineIterator(Iterable):
 
 
 class MockHeaderCodeGenerator:
-    def __init__(self, module_name: str, source_include_path: Union[str, None],
+    def __init__(self, module_name: str, source_include_path: Optional[str],
                  lines: Iterable[str]) -> None:
         self.module_name = module_name
         self.source_include_path = source_include_path
@@ -49,48 +50,55 @@ class MockHeaderCodeGenerator:
         self.methods: List[Method] = []
         self.set_up_tear_down_generated = False
 
-    def generate_header_code(self):
-        for line in self.line_it:
-            self.track_ifdef_level(line)
+    def generate_header_code(self) -> None:
+        line_number = 1
+        try:
+            for line in self.line_it:
+                self.track_ifdef_level(line)
 
-            if self.should_generate_set_up_and_tear_down_declarations():
-                self.append_set_up_tear_down_declaration()
+                if self.should_generate_set_up_and_tear_down_declarations():
+                    self.append_set_up_tear_down_declaration()
 
-            if line_starts_with_documentation(line):
-                method = self.line_it.parse_method()
-                self.register_method(method)
-            else:
-                self.append_line(line)
-            self.append_newline()
+                if line_starts_with_documentation(line):
+                    method = self.line_it.parse_method()
+                    self.register_method(method)
+                else:
+                    self.append_line(line)
+                self.append_newline()
+                line_number = line_number + 1
+        except MockGeneratorError as error:
+            print('Parsing error at line {}: {}'
+                  .format(line_number, str(error)))
+            exit(1)
 
     @property
-    def module(self):
+    def module(self) -> Module:
         return Module(self.source_include_path, self.module_name, self.methods)
 
     @property
-    def header_code(self):
+    def header_code(self) -> str:
         return str(self.header_builder)
 
-    def append_newline(self):
+    def append_newline(self) -> None:
         self.header_builder.newline()
 
-    def append_line(self, line):
+    def append_line(self, line: str) -> None:
         self.header_builder.append(line.rstrip())
 
-    def should_generate_set_up_and_tear_down_declarations(self):
+    def should_generate_set_up_and_tear_down_declarations(self) -> bool:
         return not self.set_up_tear_down_generated and self.ifdef_level == 0
 
-    def register_method(self, method):
+    def register_method(self, method: Method) -> None:
         self.header_builder.append(method.generate_header_content())
         self.methods.append(method)
 
-    def track_ifdef_level(self, line):
+    def track_ifdef_level(self, line: str) -> None:
         if line.lstrip().startswith('#if'):
             self.ifdef_level = self.ifdef_level + 1
         elif line.lstrip().startswith('#endif'):
             self.ifdef_level = self.ifdef_level - 1
 
-    def append_set_up_tear_down_declaration(self):
+    def append_set_up_tear_down_declaration(self) -> None:
         self.set_up_tear_down_generated = True
         self.header_builder.append('void mock_', self.module_name,
                                    '_set_up(void);').newline()
@@ -99,11 +107,12 @@ class MockHeaderCodeGenerator:
 
 
 def generate_mock_header_code(
-        module_name: str, source_include_path: Union[str, None],
+        module_name: str, source_include_path: Optional[str],
         lines: Iterable[str]) -> Tuple[str, Module]:
-    method = MockHeaderCodeGenerator(module_name, source_include_path, lines)
-    method.generate_header_code()
-    return method.header_code, method.module
+    generator = MockHeaderCodeGenerator(
+        module_name, source_include_path, lines)
+    generator.generate_header_code()
+    return generator.header_code, generator.module
 
 
 def generate_mock_source_code(module: Module):
@@ -112,7 +121,7 @@ def generate_mock_source_code(module: Module):
 
 
 def generate_mock_code_for_lines(
-        module_name: str, source_include_path: Union[str, None],
+        module_name: str, source_include_path: Optional[str],
         lines: Iterable[str]) -> Tuple[str, str]:
     header_code, module = generate_mock_header_code(
         module_name, source_include_path, lines)
@@ -160,9 +169,10 @@ def generate_mock_code(args) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument('-i', '--input')
-    parser.add_argument('-oh', '--output-header')
-    parser.add_argument('-oc', '--output-source')
+    required_named = parser.add_argument_group('required named arguments')
+    required_named.add_argument('-i', '--input', required=True)
+    required_named.add_argument('-oh', '--output-header', required=True)
+    required_named.add_argument('-oc', '--output-source', required=True)
     parser.add_argument('-cp', '--source-include-path')
     generate_mock_code(parser.parse_args())
 

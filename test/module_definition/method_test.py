@@ -1,6 +1,7 @@
 import pytest
 
 from module_definition import Method
+from module_definition.exceptions import MockGeneratorError
 from module_definition.parameter import Parameter
 from module_definition.parameter_documentation import ParameterDocumentation, \
     ActiveAttributions
@@ -41,7 +42,7 @@ def test_enrich_with_documentation_sets_ignored_on_length_descriptors():
     assert not length_descriptor_param.is_included
 
 
-def test_value_error_is_raised_when_length_descriptors_does_not_exist():
+def test_error_is_raised_when_length_descriptor_does_not_exist():
     # given:
     pointer_param = Parameter('x', 'abc', PointerType('int', False, 1, False))
     method = Method('abc', SimpleType('void'),
@@ -54,7 +55,7 @@ def test_value_error_is_raised_when_length_descriptors_does_not_exist():
     # when:
     try:
         method.enrich_with_documentation({'x': documentation})
-    except ValueError:
+    except MockGeneratorError:
         return
     assert False
 

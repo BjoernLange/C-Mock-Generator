@@ -1,6 +1,7 @@
 from typing import Optional
 import pytest
 
+from module_definition.exceptions import MockGeneratorError
 from module_definition.parameter_documentation import ParameterDocumentation, \
     ActiveAttributions
 from module_definition.parameter import Parameter
@@ -34,7 +35,7 @@ def test_enrich_with_documentation_fails_on_impossible_combination():
     # when:
     try:
         parameter.enrich_with_documentation(parameter_documentation)
-    except ValueError:
+    except MockGeneratorError:
         return
     assert False
 

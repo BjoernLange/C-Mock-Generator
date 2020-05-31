@@ -1,3 +1,6 @@
+from module_definition.exceptions import MockGeneratorError
+
+
 class ParameterKind:
     def __init__(self, is_in: bool, is_out: bool) -> None:
         self.p_in = is_in
@@ -17,7 +20,8 @@ class ParameterKind:
             return cls.kind_out()
         if identifier == 'inout':
             return cls.kind_in_out()
-        raise ValueError(identifier + ' is not a valid parameter kind.')
+        raise MockGeneratorError('{} is not a valid parameter kind.'
+                                 .format(identifier))
 
     @classmethod
     def from_in_out(cls, p_in: bool, p_out: bool):
@@ -27,7 +31,7 @@ class ParameterKind:
             return cls.kind_in()
         if p_out:
             return cls.kind_out()
-        raise ValueError('Parameter needs to be either in or out.')
+        raise MockGeneratorError('Parameter needs to be either in or out.')
 
     @classmethod
     def kind_in_out(cls):

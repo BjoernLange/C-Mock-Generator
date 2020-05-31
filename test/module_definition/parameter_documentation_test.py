@@ -1,5 +1,6 @@
 import pytest
 
+from module_definition.exceptions import MockGeneratorError
 from module_definition.parameter_documentation import ParameterDocumentation, \
     ActiveAttributions, parse_param_annotation
 from module_definition.parameter_kind import ParameterKind
@@ -35,7 +36,7 @@ def test_illegal_formatting_fails(text):
     # when:
     try:
         ParameterDocumentation.from_param_string(text)
-    except ValueError:
+    except MockGeneratorError:
         return
     assert False
 
@@ -47,7 +48,7 @@ def test_duplicate_in_out_attributions_are_not_allowed():
     # when:
     try:
         ParameterDocumentation.from_param_string(text)
-    except ValueError:
+    except MockGeneratorError:
         return
     assert False
 
@@ -115,7 +116,7 @@ def test_illegal_fixed_length(text):
     # when:
     try:
         active_attributions.add_attribution(text)
-    except ValueError:
+    except MockGeneratorError:
         return
     assert False
 
@@ -129,7 +130,7 @@ def test_no_attribution_is_allowed_to_appear_multiple_times(text):
     # when:
     try:
         ParameterDocumentation.from_param_string(text)
-    except ValueError:
+    except MockGeneratorError:
         return
     assert False
 
@@ -160,7 +161,7 @@ def test_conflicting_length_specifiers(text):
     # when:
     try:
         ParameterDocumentation.from_param_string(text)
-    except ValueError:
+    except MockGeneratorError:
         return
     assert False
 
@@ -172,7 +173,7 @@ def test_unknown_attribution():
     # when:
     try:
         ParameterDocumentation.from_param_string(text)
-    except ValueError:
+    except MockGeneratorError:
         return
     assert False
 

@@ -1,5 +1,6 @@
 from typing import Optional
 
+from module_definition.exceptions import MockGeneratorError
 from module_definition.parameter_documentation import ParameterDocumentation
 from module_definition.parameter_kind import ParameterKind
 from module_definition.type import Type
@@ -79,8 +80,9 @@ class Parameter:
                 True, self.type.can_be_output_parameter_type())
         elif documentation.kind.is_out() \
                 and not self.type.can_be_output_parameter_type():
-            raise ValueError('Parameter {} is declared as output but type '
-                             'cannot be used as output'.format(self))
+            raise MockGeneratorError(
+                'Parameter {} is declared as output but type cannot be used '
+                'as output'.format(self))
         else:
             self.kind = documentation.kind
 
