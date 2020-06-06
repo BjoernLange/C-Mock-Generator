@@ -17,7 +17,7 @@ Mocking the C functions is based on the idea of replacing the function call targ
 
 Choose a header file you want to mock and generate the mock header and source file:
 ```bash
-> python generate_mock.py -i example.h -oh test/mocks/include/example.h -oc test/mocks/src/example.c
+> python -m c_mock_generator.generate_mock -i example.h -oh test/mocks/include/example.h -oc test/mocks/src/example.c
 ```
 Additionally use the argument `-cp include/path` if you need a specific include path in the source file.
 
@@ -86,3 +86,10 @@ TEST(MY_TEST_SUITE_NAME, MyTestName) {
 ```
 
 This example is taken from our system tests.
+
+## Installation
+
+1. Get the source archive from the [release overview](https://github.com/BjoernLange/C-Mock-Generator/releases) or from the [build](https://github.com/BjoernLange/C-Mock-Generator/actions?query=branch%3Amaster+).
+2. Unpack the `C-Mock-Generator-X.Y.Z.tar.gz` archive.
+3. Run `python setup.py install --user`
+4. Verify that you can invoke the generator script, `python -m c_mock_generator.gernerate_mock` should print the usage instructions.
