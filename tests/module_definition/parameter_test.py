@@ -1,12 +1,12 @@
 from typing import Optional
 import pytest
 
-from module_definition.exceptions import MockGeneratorError
-from module_definition.parameter_documentation import ParameterDocumentation, \
-    ActiveAttributions
-from module_definition.parameter import Parameter
-from module_definition.parameter_kind import ParameterKind
-from module_definition.type import SimpleType, PointerType
+from c_mock_generator.module_definition.exceptions import MockGeneratorError
+from c_mock_generator.module_definition.parameter_documentation import \
+    ParameterDocumentation, ActiveAttributions
+from c_mock_generator.module_definition.parameter import Parameter
+from c_mock_generator.module_definition.parameter_kind import ParameterKind
+from c_mock_generator.module_definition.type import SimpleType, PointerType
 
 
 def create_parameter_documentation(

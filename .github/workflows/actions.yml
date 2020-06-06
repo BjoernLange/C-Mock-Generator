@@ -50,8 +50,15 @@ jobs:
         pylint **/*.py --disable=C0114 --disable=C0115 --disable=C0116 --exit-zero
     - name: Test
       run: |
-        export PYTHONPATH=.:$PYTHONPATH
         ./test.sh
     - name: System Test
       run: |
-        ./run_system_tests.sh
+        ./system_tests.sh
+    - name: Build release artifacts
+      run: |
+        python setup.py sdist bdist
+    - name: Publish release artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: dist
+        path: dist/

@@ -68,10 +68,10 @@ generate_mocks :
 	mkdir mock;
 	mkdir mock/include;
 	mkdir mock/src;
-	cd ../.. && python generate_mock.py \
-		-i system_test/array_out/include/to_mock.h \
-		-oh system_test/array_out/mock/include/to_mock.h \
-		-oc system_test/array_out/mock/src/to_mock.c
+	cd ../.. && python -m c_mock_generator.generate_mock \
+		-i system_tests/void_method/include/to_mock.h \
+		-oh system_tests/void_method/mock/include/to_mock.h \
+		-oc system_tests/void_method/mock/src/to_mock.c
 
 # Build mocks
 to_mock_mock.o : $(MOCK_SRC_DIR)/to_mock.c $(MOCK_INCLUDE_DIR)/to_mock.h $(GTEST_HEADERS)

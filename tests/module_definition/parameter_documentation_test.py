@@ -1,9 +1,9 @@
 import pytest
 
-from module_definition.exceptions import MockGeneratorError
-from module_definition.parameter_documentation import ParameterDocumentation, \
-    ActiveAttributions, parse_param_annotation
-from module_definition.parameter_kind import ParameterKind
+from c_mock_generator.module_definition.exceptions import MockGeneratorError
+from c_mock_generator.module_definition.parameter_documentation import \
+    ParameterDocumentation, ActiveAttributions, parse_param_annotation
+from c_mock_generator.module_definition.parameter_kind import ParameterKind
 
 
 @pytest.mark.parametrize('text,identifier,kind', [

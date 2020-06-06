@@ -1,8 +1,8 @@
 from abc import ABC
 from typing import Dict, Set, List, Tuple, Optional, cast
 
-from module_definition.exceptions import MockGeneratorError
-from module_definition.parameter_kind import ParameterKind
+from .exceptions import MockGeneratorError
+from .parameter_kind import ParameterKind
 
 
 ATTRIBUTION_FACTORIES = {

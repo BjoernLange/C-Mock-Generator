@@ -1,10 +1,11 @@
 from typing import List, Dict
+import os
 
-from module_definition.exceptions import MockGeneratorError
-from module_definition.parameter import Parameter
-from module_definition.parameter_documentation import ParameterDocumentation
-from module_definition.type import Type
-from util import TemplateFormatter, read_lines
+from .exceptions import MockGeneratorError
+from .parameter import Parameter
+from .parameter_documentation import ParameterDocumentation
+from .type import Type
+from c_mock_generator.util import TemplateFormatter, read_lines
 
 
 class Method:
@@ -85,6 +86,7 @@ class Method:
                       Parameter.from_parameter_list(parts[1][:-2], identifier))
 
     def generate_header_content(self) -> str:
+        header_template = os.path.join(os.path.dirname(__file__), '..',
+                                       'resource', 'header_template.h')
         return '\n'.join(
-            TemplateFormatter(read_lines(
-                'resource/header_template.h')).format(self))
+            TemplateFormatter(read_lines(header_template)).format(self))

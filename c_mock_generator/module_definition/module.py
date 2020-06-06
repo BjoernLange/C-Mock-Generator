@@ -1,6 +1,6 @@
 from typing import List, Union
 
-from module_definition.method import Method
+from c_mock_generator.module_definition import Method
 
 
 class Module:

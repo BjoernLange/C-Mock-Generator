@@ -2,9 +2,9 @@ import argparse
 import os
 from typing import Iterable, Tuple, List, Optional
 
-from module_definition import Module, Method, ParameterDocumentation
-from module_definition.exceptions import MockGeneratorError
-from util import CodeBuilder, TemplateFormatter, read_lines
+from .module_definition import Module, Method, ParameterDocumentation
+from .module_definition.exceptions import MockGeneratorError
+from .util import CodeBuilder, TemplateFormatter, read_lines
 
 
 def line_starts_with_documentation(line: str) -> bool:
@@ -116,8 +116,10 @@ def generate_mock_header_code(
 
 
 def generate_mock_source_code(module: Module):
+    source_template = os.path.join(
+        os.path.dirname(__file__), 'resource', 'source_template.c')
     return '\n'.join(TemplateFormatter(
-        read_lines('resource/source_template.c')).format(module))
+        read_lines(source_template)).format(module))
 
 
 def generate_mock_code_for_lines(

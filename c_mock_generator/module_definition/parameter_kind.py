@@ -1,4 +1,4 @@
-from module_definition.exceptions import MockGeneratorError
+from .exceptions import MockGeneratorError
 
 
 class ParameterKind:

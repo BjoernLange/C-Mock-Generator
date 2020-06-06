@@ -1,11 +1,11 @@
 import pytest
 
-from module_definition import Method
-from module_definition.exceptions import MockGeneratorError
-from module_definition.parameter import Parameter
-from module_definition.parameter_documentation import ParameterDocumentation, \
+from c_mock_generator.module_definition import Method, ParameterDocumentation
+from c_mock_generator.module_definition.exceptions import MockGeneratorError
+from c_mock_generator.module_definition.parameter import Parameter
+from c_mock_generator.module_definition.parameter_documentation import \
     ActiveAttributions
-from module_definition.type import SimpleType, PointerType
+from c_mock_generator.module_definition.type import SimpleType, PointerType
 
 
 def test_enrich_with_documentation_ensures_parameter_kind_is_set():

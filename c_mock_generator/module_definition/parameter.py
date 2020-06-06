@@ -1,9 +1,9 @@
 from typing import Optional
 
-from module_definition.exceptions import MockGeneratorError
-from module_definition.parameter_documentation import ParameterDocumentation
-from module_definition.parameter_kind import ParameterKind
-from module_definition.type import Type
+from .exceptions import MockGeneratorError
+from .parameter_documentation import ParameterDocumentation
+from .parameter_kind import ParameterKind
+from .type import Type
 
 
 class Parameter:

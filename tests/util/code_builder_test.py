@@ -1,4 +1,4 @@
-from util.code_builder import CodeBuilder
+from c_mock_generator.util.code_builder import CodeBuilder
 
 
 def test_append():

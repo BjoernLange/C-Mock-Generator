@@ -4,7 +4,7 @@ echo "===== Executing system tests ====="
 
 declare -a failed=()
 
-for test in system_test/*/; do
+for test in system_tests/*/; do
   echo "===== $test ====="
   cd "$test"
   make clean && make

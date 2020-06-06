@@ -1,3 +1,3 @@
 #!/bin/bash
 
-pytest --cov=. --cov-config=.coveragerc
+python -m pytest --cov=. --cov-config=.coveragerc

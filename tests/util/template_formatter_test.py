@@ -1,4 +1,5 @@
-from util.template_formatter import TemplateFormatter, MissingAttrException
+from c_mock_generator.util import TemplateFormatter
+from c_mock_generator.util.template_formatter import MissingAttrException
 
 import pytest
 

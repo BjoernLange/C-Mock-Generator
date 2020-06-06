@@ -68,22 +68,22 @@ generate_mocks :
 	mkdir mock;
 	mkdir mock/include;
 	mkdir mock/src;
-	cd ../.. && python generate_mock.py \
-		-i system_test/void_method/include/to_mock.h \
-		-oh system_test/void_method/mock/include/to_mock.h \
-		-oc system_test/void_method/mock/src/to_mock.c
+	cd ../.. && python -m c_mock_generator.generate_mock \
+		-i system_tests/complex/include/complex.h \
+		-oh system_tests/complex/mock/include/complex.h \
+		-oc system_tests/complex/mock/src/complex.c
 
 # Build mocks
-to_mock_mock.o : $(MOCK_SRC_DIR)/to_mock.c $(MOCK_INCLUDE_DIR)/to_mock.h $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(USER_INCLUDES) -c $(MOCK_SRC_DIR)/to_mock.c -o to_mock_mock.o
+complex_mock.o : $(MOCK_SRC_DIR)/complex.c $(MOCK_INCLUDE_DIR)/complex.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(USER_INCLUDES) -c $(MOCK_SRC_DIR)/complex.c -o complex_mock.o
 
 # Build and run application tests
-under_test.o : $(USER_SRC_DIR)/under_test.c $(USER_INCLUDE_DIR)/under_test.h $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(USER_INCLUDES) -c $(USER_SRC_DIR)/under_test.c
+something.o : $(USER_SRC_DIR)/something.c $(USER_INCLUDE_DIR)/something.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(USER_INCLUDES) -c $(USER_SRC_DIR)/something.c
 
-under_test_test.o : $(USER_TEST_DIR)/under_test_test.c $(USER_INCLUDE_DIR)/under_test.h $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(USER_INCLUDES) -c $(USER_TEST_DIR)/under_test_test.c
+something_test.o : $(USER_TEST_DIR)/something_test.c $(USER_INCLUDE_DIR)/something.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(USER_INCLUDES) -c $(USER_TEST_DIR)/something_test.c
 
-application_test : to_mock_mock.o under_test.o under_test_test.o $(GTEST_LIBS)
+application_test : complex_mock.o something.o something_test.o $(GTEST_LIBS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -L$(GTEST_LIB_DIR) -lgtest_main -lpthread $^ -o $@
 	./application_test

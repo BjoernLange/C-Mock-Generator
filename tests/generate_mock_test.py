@@ -1,4 +1,4 @@
-from generate_mock import MockHeaderCodeGenerator
+from c_mock_generator.generate_mock import MockHeaderCodeGenerator
 
 EXPECTED_HEADER_CODE = \
     '''#ifndef __DEMO_H__
