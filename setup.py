@@ -5,7 +5,7 @@ with open("README.md", "r") as file:
 
 setuptools.setup(
     name="C-Mock-Generator",
-    version="0.9.0",
+    version="1.0.0-beta",
     author="Björn Lange",
     author_email="bjoern.lange@tu-dortmund.de",
     description="A simple Mockito style oriented mock generator for C",
