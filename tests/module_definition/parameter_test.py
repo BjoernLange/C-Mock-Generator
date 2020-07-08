@@ -164,3 +164,12 @@ def test_types_not_reported_as_c_string(c_type):
     assert not parameter.has_c_string_type
     assert not parameter.has_utf8_string_type
     assert parameter.has_no_string_type
+
+
+def test_from_parameter_list_raises_error_when_parameter_list_is_empty():
+    # when:
+    try:
+        Parameter.from_parameter_list('', 'abc')
+    except MockGeneratorError:
+        return
+    assert False

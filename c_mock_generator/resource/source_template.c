@@ -218,6 +218,7 @@ static bool <<<identifier>>>_mocked_call_matches_input(
 <<<ENDIF>>>
 <<<IF has_no_input_parameters>>>
 static bool <<<identifier>>>_mocked_call_matches_input(<<<identifier>>>_mocked_call_t * mocked_call) {
+    (void)mocked_call;
     return true;
 }
 <<<ENDIF>>>

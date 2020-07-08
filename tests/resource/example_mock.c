@@ -74,6 +74,7 @@ static void ex_init_mocked_calls_free(void) {
 }
 
 static bool ex_init_mocked_call_matches_input(ex_init_mocked_call_t * mocked_call) {
+    (void)mocked_call;
     return true;
 }
 

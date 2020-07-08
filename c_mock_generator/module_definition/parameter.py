@@ -96,6 +96,11 @@ class Parameter:
     @classmethod
     def from_parameter_list(cls, parameter_list: str, method_identifier: str):
         parameter_list = parameter_list.strip()
+        if not parameter_list:
+            raise MockGeneratorError(
+                'Method {} has an unspecified number of arguments '
+                '(pre-prototype). Use "void" if you want a method without '
+                'parameters.'.format(method_identifier))
         if parameter_list == 'void':
             return []
 
