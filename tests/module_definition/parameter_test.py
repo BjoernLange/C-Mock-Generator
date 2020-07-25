@@ -173,3 +173,18 @@ def test_from_parameter_list_raises_error_when_parameter_list_is_empty():
     except MockGeneratorError:
         return
     assert False
+
+
+@pytest.mark.parametrize(('c_type', 'expected_type'), [
+    (SimpleType('int'), SimpleType('int')),
+    (PointerType('int', True, 1, True), PointerType('int', True, 1, False)),
+])
+def test_struct_type(c_type, expected_type):
+    # given:
+    parameter = Parameter('abc', 'def', c_type)
+
+    # when:
+    struct_type = parameter.struct_type
+
+    # then:
+    assert struct_type == expected_type

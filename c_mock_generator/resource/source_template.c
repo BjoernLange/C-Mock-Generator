@@ -14,7 +14,7 @@ struct <<<identifier>>>_mocked_call {
     bool has_<<<identifier>>>;
     size_t <<<identifier>>>_length;
     <<<ENDIF>>>
-    <<<type>>> <<<identifier>>>;
+    <<<struct_type>>> <<<identifier>>>;
     <<<ENDFORALL>>>
     bool is_mock_complete;
     <<<IF has_not_void_return_type>>>

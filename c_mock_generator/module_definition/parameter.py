@@ -28,6 +28,10 @@ class Parameter:
         return self.kind.is_out()
 
     @property
+    def struct_type(self) -> Type:
+        return self.type.strip_pointer_const()
+
+    @property
     def size_type(self) -> Type:
         return self.type.decrease_pointer_count().strip_const()
 

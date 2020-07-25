@@ -15,6 +15,10 @@ class Type(ABC):
         raise NotImplementedError()
 
     @abstractmethod
+    def strip_pointer_const(self):
+        raise NotImplementedError()
+
+    @abstractmethod
     def is_pointer(self) -> bool:
         raise NotImplementedError()
 
@@ -50,6 +54,9 @@ class SimpleType(Type):
     def strip_const(self):
         return self
 
+    def strip_pointer_const(self):
+        return self
+
     def is_pointer(self) -> bool:
         return False
 
@@ -64,6 +71,15 @@ class SimpleType(Type):
 
     def __str__(self) -> str:
         return self.type
+
+    def __repr__(self) -> str:
+        return type(self).__name__ + '[' + str(self) + ']'
+
+    def __eq__(self, other) -> bool:
+        if not isinstance(other, SimpleType):
+            return False
+
+        return self.type == other.type
 
     @classmethod
     def from_type_string(cls, type_string: str):
@@ -91,6 +107,10 @@ class PointerType(Type):
     def strip_const(self):
         return PointerType(self.type, False, self.pointer_count, False)
 
+    def strip_pointer_const(self):
+        return PointerType(self.type, self.value_const,
+                           self.pointer_count, False)
+
     def is_pointer(self) -> bool:
         return True
 
@@ -107,6 +127,18 @@ class PointerType(Type):
         v_const = ' const' if self.value_const else ''
         p_const = ' const' if self.pointer_const else ''
         return self.type + v_const + ' ' + '*' * self.pointer_count + p_const
+
+    def __repr__(self) -> str:
+        return type(self).__name__ + '[' + str(self) + ']'
+
+    def __eq__(self, other) -> bool:
+        if not isinstance(other, PointerType):
+            return False
+
+        return self.type == other.type and \
+            self.value_const == other.value_const and \
+            self.pointer_count == other.pointer_count and \
+            self.pointer_const == other.pointer_const
 
     @classmethod
     def from_type_string(cls, type_string: str):
