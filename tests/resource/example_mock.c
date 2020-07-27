@@ -196,7 +196,7 @@ static bool ex_do_something_mocked_call_matches_input(
         ex_do_something_mocked_call_t * mocked_call,
         int i
         ) {
-    if (mocked_call->i != i) {
+    if (memcmp(&mocked_call->i, &i, sizeof(int)) != 0) {
         return false;
     }
 

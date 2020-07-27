@@ -68,7 +68,9 @@ static <<<identifier>>>_mocked_call_t * <<<identifier>>>_mocked_call_create(
     mocked_call-><<<identifier>>> = <<<identifier>>>;
     <<<ENDIF>>>
     <<<IF is_output>>>
+    <<<IF is_not_input>>>
     mocked_call-><<<identifier>>> = NULL;
+    <<<ENDIF>>>
     mocked_call->has_<<<identifier>>> = false;
     mocked_call-><<<identifier>>>_length = 0;
     <<<ENDIF>>>
@@ -158,13 +160,13 @@ static bool <<<identifier>>>_mocked_call_matches_input(
     <<<IF is_input>>>
     <<<IF is_included>>>
     <<<IF has_simple_type>>>
-    if (mocked_call-><<<identifier>>> != <<<identifier>>>) {
+    if (memcmp(&mocked_call-><<<identifier>>>, &<<<identifier>>>, sizeof(<<<size_type>>>)) != 0) {
         return false;
     }
     <<<ENDIF>>>
     <<<IF has_pointer_type>>>
     <<<IF is_single_element>>>
-    if (*(mocked_call-><<<identifier>>>) != *(<<<identifier>>>)) {
+    if (memcmp(mocked_call-><<<identifier>>>, <<<identifier>>>, sizeof(<<<size_type>>>)) != 0) {
         return false;
     }
     <<<ENDIF>>>

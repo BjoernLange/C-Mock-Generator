@@ -46,6 +46,7 @@ def test_initial_kind_is_guessed():
 
     # then:
     assert parameter.is_input
+    assert not parameter.is_not_input
     assert parameter.is_output
 
 
@@ -60,6 +61,7 @@ def test_enrich_with_documentation_defaults():
     # then:
     assert parameter.kind == ParameterKind.kind_in()
     assert parameter.is_input
+    assert not parameter.is_not_input
     assert not parameter.is_output
     assert parameter.has_simple_type
     assert not parameter.has_pointer_type
@@ -69,6 +71,21 @@ def test_enrich_with_documentation_defaults():
     assert not parameter.is_null_terminated
     assert not parameter.has_length_descriptor
     assert parameter.length_descriptor is None
+
+
+def test_enrich_with_documentation_sets_is_input():
+    # given:
+    parameter = Parameter('abc', 'def', PointerType('int', False, 1, False))
+    parameter_documentation = create_parameter_documentation(
+        'abc', parameter_kind='out')
+
+    # when:
+    parameter.enrich_with_documentation(parameter_documentation)
+
+    # then:
+    assert parameter.kind == ParameterKind.kind_out()
+    assert not parameter.is_input
+    assert parameter.is_not_input
 
 
 def test_enrich_with_documentation_sets_fixed_length():

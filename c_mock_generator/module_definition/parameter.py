@@ -24,6 +24,10 @@ class Parameter:
         return self.kind.is_in()
 
     @property
+    def is_not_input(self) -> bool:
+        return not self.is_input
+
+    @property
     def is_output(self) -> bool:
         return self.kind.is_out()
 
